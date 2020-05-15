@@ -15,8 +15,7 @@ footer {
   font-size: 14px;
   text-align: center;
   a {
-    color: #666;
-    text-decoration: none;
+    width: 600px;
     color: #999;
   }
 }

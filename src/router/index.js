@@ -1,16 +1,17 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import mainbody from '../views/mainbody'
 
 Vue.use(VueRouter)
 
   const routes = [
-
+    {
+      path:"/home",
+      component:mainbody
+    }
 ]
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
   routes
 })
 
