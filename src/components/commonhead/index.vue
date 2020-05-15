@@ -18,20 +18,35 @@
 </template>
 
 <script>
+import { mapMutations,mapState } from "vuex"
 export default {
   name: "header",
   data(){
     return {
       title:"",
-      todos:[]
+      
     }
   },
-  methods:{
-    addtodos(){
-      this.todos.push({id:new Date().getTime,name:this.title,done:false})
-      this.title = ""
-      this.$emit("abc",this.todos)
+  watch:{
+    handler(){
+      this.toSave()
     },
+    deep:true
+  },
+  computed:{
+    ...mapState(["todos"])
+  },
+  methods:{
+    ...mapMutations(["SETTODOS"]),
+    addtodos(){
+      this.todos.push({id:new Date().getTime(),name:this.title,done:false})
+      this.title = ""
+      this.SETTODOS(this.todos)
+      this.toSave()
+    },
+    toSave(){
+      window.localStorage.setItem("todos",JSON.stringify(this.todos))
+    }
   }
 };
 </script>

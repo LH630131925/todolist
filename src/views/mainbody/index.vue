@@ -1,28 +1,28 @@
 <template>
   <div>
-    <commonhead @abc="fn2"></commonhead>
+    <commonhead ></commonhead>
     <section>
-      <h2 onclick="save()">正在进行 <span id="todocount">0</span></h2>
-      <ol id="todolist" class="demo-box"></ol>
-      <h2>已经完成 <span id="donecount">2</span></h2>
-      <ul id="donelist">
-        <li draggable="true">
+      <h2 onclick="save()">正在进行 <span id="todocount">{{doingList.length}}</span></h2>
+      <ol id="todolist" class="demo-box" >
+        <li draggable="true" v-for="item in doingList" :key = "item.id">
           <input
             type="checkbox"
-            onchange='update(1,"done",false)'
-            checked="checked"
+            @change = "item.done = true,SETTODOS(todos)"
           />
-          <p id="p-1" onclick="edit(1)">2</p>
-          <a href="javascript:remove(1)">-</a>
+          <p id="p-1" onclick="edit(1)">{{item.name}}</p>
+          <a href="#" @click = "DELETETODOS(item.id)">-</a>
         </li>
-        <li draggable="true">
+      </ol>
+      <h2>已经完成 <span id="donecount">{{doneList.length}}</span></h2>
+      <ul id="donelist">
+        <li draggable="true" v-for="item in doneList" :key = "item.id">
           <input
             type="checkbox"
-            onchange='update(0,"done",false)'
+            @change='item.done = false,SETTODOS(todos)'
             checked="checked"
           />
-          <p id="p-0" onclick="edit(0)">1</p>
-          <a href="javascript:remove(0)">-</a>
+          <p id="p-1" onclick="edit(1)">{{item.name}}</p>
+          <a href="#" @click = "DELETETODOS(item.id)">-</a>
         </li>
       </ul>
     </section>
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { mapState,mapMutations,mapGetters } from "vuex"
 import commonhead from "@/components/commonhead";
 import commonfoot from "@/components/commonfoot";
 export default {
@@ -39,14 +40,22 @@ export default {
     commonhead,
     commonfoot,
   },
-  data(){
-    return {
-      todos:[]
+  watch:{
+    todos:{
+      handler(){
+        this.toSave()
+      },
+      deep:true
     }
   },
+  computed:{
+    ...mapState(["todos"]),
+    ...mapGetters(["doingList","doneList"])
+  },
   methods:{
-    fn2(payload){
-      this.todos = payload
+    ...mapMutations(["SETTODOS","DELETETODOS"]),
+     toSave(){
+      window.localStorage.setItem("todos",JSON.stringify(this.todos))
     }
   }
 };
