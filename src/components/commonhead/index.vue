@@ -1,7 +1,7 @@
 <template>
   <header>
     <section>
-      <form action="javascript:postaction()" id="form">
+      <form  id="form" @submit.prevent="addtodos">
         <label for="title">ToDoList</label>
         <input
           type="text"
@@ -10,6 +10,7 @@
           placeholder="添加ToDo"
           required="required"
           autocomplete="off"
+          v-model="title"
         />
       </form>
     </section>
@@ -19,6 +20,19 @@
 <script>
 export default {
   name: "header",
+  data(){
+    return {
+      title:"",
+      todos:[]
+    }
+  },
+  methods:{
+    addtodos(){
+      this.todos.push({id:new Date().getTime,name:this.title,done:false})
+      this.title = ""
+      this.$emit("abc",this.todos)
+    },
+  }
 };
 </script>
 

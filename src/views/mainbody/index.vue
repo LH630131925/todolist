@@ -1,6 +1,6 @@
 <template>
   <div>
-    <commonhead></commonhead>
+    <commonhead @abc="fn2"></commonhead>
     <section>
       <h2 onclick="save()">正在进行 <span id="todocount">0</span></h2>
       <ol id="todolist" class="demo-box"></ol>
@@ -26,19 +26,29 @@
         </li>
       </ul>
     </section>
-    <foot></foot>
+    <commonfoot></commonfoot>
   </div>
 </template>
 
 <script>
-import commonhead from "@/components/header";
-import foot from "@/components/footer";
+import commonhead from "@/components/commonhead";
+import commonfoot from "@/components/commonfoot";
 export default {
   name: "mainbody",
   components: {
     commonhead,
-    foot,
+    commonfoot,
   },
+  data(){
+    return {
+      todos:[]
+    }
+  },
+  methods:{
+    fn2(payload){
+      this.todos = payload
+    }
+  }
 };
 </script>
 
